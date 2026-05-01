@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KB Flowers - Florería en Panama | Flores Frescas y Secas</title>
+    <meta name="description"
+        content="KB Flowers - La mejor florería de Panama. Flores frescas, secas, regalos y entrega a domicilio. Mayoristas y minoristas.">
+    <link rel="shortcut icon" href="assets/logo.webp" type="image/x-icon">
+    
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "KB Flowers",
+        "image": "assets/logo.webp",
+        "@id": "https://floristeriapanama.dondeseria.com",
+        "url": "https://floristeriapanama.dondeseria.com",
+        "telephone": "+507 6112-9013",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Ciudad de Panamá",
+            "addressLocality": "Ciudad de Panamá",
+            "addressRegion": "Panamá",
+            "addressCountry": "PA"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 9.0610056,
+            "longitude": -79.4136114
+        },
+        "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+                "Monday",
+                "Tuesday", 
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday"
+            ],
+            "opens": "00:00",
+            "closes": "23:30"
+        },
+        "sameAs": [
+            "https://www.instagram.com/floresenpanama"
+        ]
+    }
+    </script>
+
+    <link rel="stylesheet" href="styles.css">
+    
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4D2Q2MR5V2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-4D2Q2MR5V2');
+    </script>
+    
+    <!-- Google Ads -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17698830352"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'AW-17698830352');
+    </script>
+
+    <!-- FUNCIONES DE TRACKING PARA GOOGLE ANALYTICS -->
+    <script>
+        // Tracking WhatsApp con evento personalizado GA4 + Google Ads
+        function trackWhatsAppLead(whatsappUrl, eventLabel) {
+            try {
+                // Evento personalizado para GA4
+                gtag('event', 'whatsapp_click', {
+                    'event_category': 'engagement',
+                    'event_label': eventLabel,
+                    'button_location': eventLabel,
+                    'page_location': window.location.href
+                });
+
+                // Conversión Google Ads
+                gtag('event', 'conversion', {
+                    'send_to': 'AW-17698830352/lA9PCODAu4wbEMiPm5pB',
+                    'event_callback': function () {
+                        console.log('Tracking exitoso, abriendo WhatsApp...');
+                        window.open(whatsappUrl, '_blank');
+                    }
+                });
+
+                // Backup: si el callback falla, abre WhatsApp después de 300ms
+                setTimeout(function () {
+                    window.open(whatsappUrl, '_blank');
+                }, 300);
+
+            } catch (error) {
+                console.error('Error en tracking:', error);
+                window.open(whatsappUrl, '_blank');
+            }
+            return false;
+        }
+
+        // Tracking para clicks en navegación
+        function trackNavClick(linkName) {
+            gtag('event', 'nav_click', {
+                'event_category': 'navigation',
+                'event_label': linkName,
+                'link_name': linkName
+            });
+        }
+
+        // Tracking para botones del Hero
+        function trackHeroButton(buttonName) {
+            gtag('event', 'hero_button_click', {
+                'event_category': 'engagement',
+                'event_label': buttonName,
+                'button_name': buttonName
+            });
+        }
+
+        // Tracking para redes sociales
+        function trackSocialClick(platform) {
+            gtag('event', 'social_click', {
+                'event_category': 'social',
+                'event_label': platform,
+                'social_platform': platform
+            });
+        }
+
+        // Tracking para catálogo
+        function trackCatalogClick(source) {
+            gtag('event', 'catalog_view', {
+                'event_category': 'engagement',
+                'event_label': source,
+                'click_source': source
+            });
+        }
+    </script>
+</head>
+
+<body>
+
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="assets/logo.webp" alt="KB Flowers Logo">
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#inicio" onclick="trackNavClick('inicio')">Inicio</a></li>
+                <li><a href="catalogo.html" onclick="trackNavClick('san_valentin')">San Valentin</a></li>
+                <li><a href="https://wa.me/50760318371" target="_blank" onclick="trackNavClick('whatsapp_nav'); trackWhatsAppLead('https://wa.me/50760318371', 'navbar_whatsapp')">WhatsApp</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <video class="hero-video" autoplay muted loop>
+            <source src="/assets/wallpaper.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Florería Premium en Panama</h1>
+            <p class="hero-subtitle">Convertimos cada momento único en algo inolvidable con los diseños florales más selectos de la capital</p>
+            <button class="cta-button"
+                onclick="trackHeroButton('hacer_pedido'); return trackWhatsAppLead('https://wa.me/50760318371?text=Hola, quiero hacer un pedido de flores', 'hero_button')">
+                Hacer Pedido
+            </button>
+            <a href="/catalogo.html" class="cta-button catalog-btn" onclick="trackHeroButton('ver_catalogo'); trackCatalogClick('hero_section')">
+                <span class="heart-emoji">💖</span>
+                Ver Catálogo
+                <span class="heart-emoji">💖</span>
+            </a>
+        </div>
+    </section>
+
+<!-- Products Cards -->
+<section class="products">
+    <div class="container">
+        <p class="section-title">Productos Especiales que Tenemos para Ti</p>
+        <div class="cards-grid">
+            
+            <!-- Product 1: Fuego Clásico -->
+            <div class="product-card">
+                <div class="product-badge">Más Vendido</div>
+                <div class="product-image">
+                    <img src="assets/ramo50.webp" alt="Fuego Clásico - Claveles rojos con eucalipto">
+                </div>
+                <div class="card-content">
+                    <p class="product-name">Fuego Clásico</p>
+                    <p class="product-description">Claveles en tono rojo combinados con eucalipto, envueltos en papel blanco minimalista y rematados con lazo rojo. Tradicional y franco. Cariño, admiración y pasión expresados sin desvíos.</p>
+                    <p class="product-price">$35.00</p>
+                    <button class="order-btn"
+                        onclick="return trackWhatsAppLead('https://wa.me/50760318371?text=Hola, me interesa Fuego Clásico por $35.00. ¿Podrías darme más información?', 'fuego_clasico')">
+                        Pedir Ahora
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product 2: Protección Dulce -->
+            <div class="product-card">
+                <div class="product-badge">Más Vendido</div>
+                <div class="product-image">
+                    <img src="assets/ramo45.webp" alt="Protección Dulce - Claveles rosados con rosas spray">
+                </div>
+                <div class="card-content">
+                    <p class="product-name">Protección Dulce</p>
+                    <p class="product-description">Claveles en rosa acompañados de rosas spray y baby breath, presentados en papel rosado con su lazo. Suavidad y elegancia despojadas de excesos. Un gesto delicado que conmueve el corazón.</p>
+                    <p class="product-price">$70.00</p>
+                    <button class="order-btn"
+                        onclick="return trackWhatsAppLead('https://wa.me/50760318371?text=Hola, me interesa Protección Dulce por $70.00. ¿Podrías darme más información?', 'proteccion_dulce')">
+                        Pedir Ahora
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product 3: Incendio Interior -->
+            <div class="product-card">
+                <div class="product-badge">Premium</div>
+                <div class="product-image">
+                    <img src="assets/ramo21.webp" alt="Incendio Interior - Rosas rojas, naranjas y rosadas en caja floral">
+                </div>
+                <div class="card-content">
+                    <p class="product-name">Incendio Interior</p>
+                    <p class="product-description">Rosas en rojo, naranja y rosado dispuestas en una caja floral. Fuerza y colorido para esa persona que te conmueve por dentro. El obsequio que expresa: contigo me siento vivo.</p>
+                    <p class="product-price">$187.50</p>
+                    <button class="order-btn"
+                        onclick="return trackWhatsAppLead('https://wa.me/50760318371?text=Hola, me interesa Incendio Interior por $187.50. ¿Podrías darme más información?', 'incendio_interior')">
+                        Pedir Ahora
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+    <!-- Photo Collage -->
+    <section class="gallery">
+        <div class="container">
+            <p class="section-title">Muestra de Nuestras Creaciones</p>
+            <div class="photo-grid">
+                <div class="photo-item">
+                    <img src="assets/ramo1.webp" alt="Latido de Poder - Rosas rojas en caja corazón">
+                </div>
+                <div class="photo-item">
+                    <img src="assets/ramo14.webp" alt="Imperio Rosa - Rosas y orquídeas premium">
+                </div>
+                <div class="photo-item">
+                    <img src="assets/ramo39.webp" alt="Artillería Solar - Girasoles frescos">
+                </div>
+                <div class="photo-item">
+                    <img src="assets/ramo23.webp" alt="Código Elegante - Bouquet estilo coreano">
+                </div>
+                <div class="photo-item">
+                    <img src="assets/ramo9.webp" alt="Fortaleza Pastel - Hortensias en jarrón">
+                </div>
+                <div class="photo-item">
+                    <img src="assets/ramo17.webp" alt="Conquista Real - Rosas y orquídeas en caja">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services">
+        <div class="container">
+            <div class="services-grid">
+                <div class="service-item">
+                    <h2>Tienda de Flores Secas</h2>
+                    <p>Conoce nuestra esmerada colección de flores secas, ideales para quienes desean adornos de larga vida con un acento natural. Resultan una alternativa excelente para casas, oficinas y eventos importantes, pues conservan su atractivo durante mucho tiempo. Cada arreglo se elabora de manera artesanal para mantener colores y texturas genuinas, dando lugar a piezas únicas que renuevan cualquier ambiente sin necesidad de cuidados constantes.</p>
+                    <button class="service-btn" onclick="window.open('tienda-flores-secas-panama.html', '_self')">Ver Más</button>
+                </div>
+                <div class="service-image">
+                    <img src="assets/ramo34.webp" alt="Flores Secas">
+                </div>
+            </div>
+
+            <div class="services-grid reverse">
+                <div class="service-image">
+                    <img src="assets/ramo3.webp" alt="Mayorista">
+                </div>
+                <div class="service-item">
+                    <h2>Florería Mayorista</h2>
+                    <p>Brindamos servicio a eventos de alto nivel, matrimonios, encuentros corporativos y otros profesionales del sector floral. Ofrecemos tarifas preferenciales para órdenes mayoristas y un extenso catálogo de flores frescas tanto nacionales como importadas. El servicio comprende acompañamiento personalizado, entregas planificadas y total adaptabilidad para grandes cantidades. Colaboramos con los proveedores más reconocidos para asegurar frescura y excelencia en cada envío.</p>
+                    <button class="service-btn" onclick="window.open('floreria-mayorista-panama.html', '_self')">Ver Más</button>
+                </div>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-item">
+                    <h2>Tienda de Regalos</h2>
+                    <p>Acompaña tus flores con nuestra amplia oferta de obsequios particulares: chocolates hechos a mano, velas con aromas, peluches, globos y accesorios singulares. Cada artículo se selecciona con dedicación para generar momentos cargados de emoción y memoria. Disponemos de alternativas para cualquier celebración: cumpleaños, aniversarios, San Valentín, Día de la Madre y muchas más. Nuestro personal te asesora para armar el regalo ideal que comunique justo lo que deseas expresar.</p>
+                    <button class="service-btn" onclick="window.open('tienda-regalos-panama.html', '_self')">Ver Más</button>
+                </div>
+                <div class="service-image">
+                    <img src="assets/ramo5.webp" alt="Regalos">
+                </div>
+            </div>
+
+            <div class="services-grid reverse">
+                <div class="service-image">
+                    <img src="assets/ramo22.webp" alt="Entrega">
+                </div>
+                <div class="service-item">
+                    <h2>Entrega de Flores</h2>
+                    <p>Disponemos de un sistema de envío veloz y seguro que abarca toda Panama y sus zonas vecinas. Nuestro equipo se encarga de que cada composición llegue en óptimas condiciones y exactamente cuando la requieres. Recibimos pedidos con despacho el mismo día si se solicitan antes de las 2:00 PM, envíos planificados para fechas relevantes y entregas express para imprevistos. Cada envío cuenta con monitoreo en tiempo real y foto que confirma la entrega para que estés completamente tranquilo.</p>
+                    <button class="service-btn" onclick="window.open('entrega-flores-panama.html', '_self')">Ver Más</button>
+                </div>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-item">
+                    <h2>Tienda de Canastas de Regalos</h2>
+                    <p>Canastas personalizadas creadas para impresionar en cualquier ocasión memorable. Mezclamos flores frescas o secas con productos gourmet, vinos de calidad, chocolates hechos a mano, frutas seleccionadas y accesorios exclusivos. Cada canasta se adapta al evento y al presupuesto, desde presentaciones corporativas refinadas hasta detalles románticos cercanos. Nuestro equipo creativo elabora composiciones que despiertan admiración a primera vista, perfectas para obsequios empresariales, reuniones familiares o gestos de afecto.</p>
+                    <button class="service-btn" onclick="window.open('tienda-canasta-regalos-panama.html', '_self')">Ver Más</button>
+                </div>
+                <div class="service-image">
+                    <img src="assets/ramo15.webp" alt="Canastas">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Areas Section -->
+    <section class="service-areas">
+        <div class="container">
+            <p class="section-title">Zonas que Atendemos</p>
+            <p class="areas-intro">Llevamos la lozanía y el encanto de nuestras composiciones a cada esquina de Panama. Nuestro servicio de despacho llega a las siguientes áreas:</p>
+            
+            <div class="areas-grid">
+                <div class="area-card">
+                    <div class="area-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                    </div>
+                    <h3>Ciudad de Panamá Centro</h3>
+                    <p>Casco Viejo, Bella Vista, El Cangrejo, Obarrio, Marbella y todos los sectores de actividad comercial del corazón capitalino.</p>
+                </div>
+
+                <div class="area-card">
+                    <div class="area-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                    </div>
+                    <h3>Punta Pacífica y Costa del Este</h3>
+                    <p>Edificios residenciales, áreas premium, Multiplaza Pacific y los sectores más vanguardistas de la urbe.</p>
+                </div>
+
+                <div class="area-card">
+                    <div class="area-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                    </div>
+                    <h3>San Miguelito</h3>
+                    <p>Los Andes, Cerro Viento, San Isidro, Brisas del Golf y el resto de las comunidades pertenecientes al distrito de San Miguelito.</p>
+                </div>
+
+                <div class="area-card">
+                    <div class="area-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                    </div>
+                    <h3>Clayton y Ancón</h3>
+                    <p>Ciudad del Saber, Balboa, Albrook, Ancón y los sectores residenciales próximos al Canal de Panamá.</p>
+                </div>
+
+                <div class="area-card">
+                    <div class="area-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                    </div>
+                    <h3>San Francisco y Parque Lefevre</h3>
+                    <p>San Francisco, Parque Lefevre, Pueblo Nuevo, Río Abajo, Juan Díaz y las urbanizaciones ubicadas al oriente de la urbe.</p>
+                </div>
+
+                <div class="area-card">
+                    <div class="area-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                    </div>
+                    <h3>Más Zonas</h3>
+                    <p>Betania, Calidonia, Santa Ana, Condado del Rey, Las Cumbres, Tocumen, Arraiján y otros sectores adicionales del área metropolitana.</p>
+                </div>
+            </div>
+
+            <div class="areas-cta">
+                <p>¿No ves tu sector listado? Contáctanos y revisamos si llegamos hasta donde estás.</p>
+                <button class="area-btn" onclick="return trackWhatsAppLead('https://wa.me/50760318371?text=Hola, quiero verificar si hacen entregas en mi zona de Panama', 'area_coverage_btn')">
+                    Consultar Cobertura
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Map -->
+    <section class="location">
+        <div class="container">
+            <p class="section-title">Dónde Estamos</p>
+            <div class="map-container">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.03024485359!2d-79.4136114!3d9.0610056!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fab55336ad10cc1%3A0x8ff1cdcade7d21ec!2sFloristeria%20Panama%20-%20Sophia%20Bouquet!5e0!3m2!1ses-419!2sco!4v1773761482922!5m2!1ses-419!2sco"
+                    width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-brand">KB Flowers</p>
+                <a href="https://www.instagram.com/floresenpanama" target="_blank" class="instagram-icon" onclick="trackSocialClick('instagram')">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </a>
+                <p class="footer-year">2026</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <div class="whatsapp-float">
+        <a href="#" onclick="return trackWhatsAppLead('https://wa.me/50760318371', 'floating_button')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.531 3.488"/>
+            </svg>
+        </a>
+    </div>
+
+    <script>
+        // Valentine's Modal Auto-close
+        window.addEventListener('load', function() {
+            const modal = document.getElementById('valentineModal');
+            
+            // Cerrar automáticamente después de 5 segundos
+            setTimeout(function() {
+                modal.style.display = 'none';
+            }, 5000);
+            
+            // Cerrar al hacer click en el overlay
+            const overlay = document.querySelector('.valentine-overlay');
+            if (overlay) {
+                overlay.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                });
+            }
+        });
+    </script>
+
+    <script>
+        // Mobile menu toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

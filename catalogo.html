@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Flores - KB Flowers | Florería en Panamá</title>
+    <meta name="description"
+        content="Catálogo completo de KB Flowers en Panamá. Rosas, gerberas, girasoles, arreglos florales y más con entrega a domicilio.">
+    <link rel="shortcut icon" href="assets/logo.webp" type="image/x-icon">
+
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4D2Q2MR5V2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-4D2Q2MR5V2');
+    </script>
+
+    <!-- FUNCIÓN DE TRACKING WHATSAPP -->
+    <script>
+        function trackWhatsAppLead(whatsappUrl, eventLabel) {
+            try {
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'generate_lead', {
+                        'event_category': 'WhatsApp',
+                        'event_label': eventLabel
+                    });
+                }
+                setTimeout(function() {
+                    window.open(whatsappUrl, '_blank');
+                }, 300);
+            } catch (error) {
+                console.error('Error en tracking:', error);
+                window.open(whatsappUrl, '_blank');
+            }
+            return false;
+        }
+    </script>
+    <link rel="stylesheet" href="catalogo.css">
+    <style>
+        /* Nota Flotante - Delivery No Incluido */
+        .delivery-floating-note {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #ff6b9d, #c44569);
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 30px;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 6px 18px rgba(196, 69, 105, 0.35);
+            z-index: 9998;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            max-width: 280px;
+            line-height: 1.3;
+            animation: pulseDelivery 2.5s ease-in-out infinite;
+        }
+        .delivery-floating-note .delivery-icon { font-size: 18px; }
+        .delivery-floating-note .delivery-close {
+            background: rgba(255,255,255,0.2);
+            border: none; color: #fff; cursor: pointer;
+            border-radius: 50%; width: 22px; height: 22px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; margin-left: 6px;
+        }
+        @keyframes pulseDelivery {
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+        @media (max-width: 600px) {
+            .delivery-floating-note { font-size: 12px; padding: 10px 14px; max-width: 220px; bottom: 12px; left: 12px; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Nota flotante: Delivery No Incluido -->
+    <div class="delivery-floating-note" id="deliveryNote">
+        <span class="delivery-icon">🚚</span>
+        <span>El servicio de Delivery <strong>NO está incluido</strong> en el precio.</span>
+        <button class="delivery-close" onclick="document.getElementById('deliveryNote').style.display='none'" aria-label="Cerrar">×</button>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="assets/logo.png" alt="KB Flowers Logo">
+            </div>
+            <h1>Nuestro Catálogo</h1>
+            <p>Diseños florales frescos y exclusivos para cada momento especial en Panamá</p>
+            <div class="decorative-line"></div>
+        </div>
+    </header>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+        <div class="container">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-category="all">Todos</button>
+                <button class="filter-btn" data-category="rosas">Rosas</button>
+                <button class="filter-btn" data-category="girasoles">Girasoles</button>
+                <button class="filter-btn" data-category="bouquets">Bouquets</button>
+                <button class="filter-btn" data-category="cajas">En Caja</button>
+                <button class="filter-btn" data-category="mixtas">Flores Mixtas</button>
+                <button class="filter-btn" data-category="premium">Premium</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Catalog Section -->
+    <section class="catalog">
+        <div class="container">
+            <div class="products-grid">
+
+                <!-- ARREGLOS PERSONALIZADOS SPECIAL CARD -->
+                <div class="product-card special-card" data-category="especiales">
+                    <div class="category-badge">Personalización</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo3.png')">
+                        <img src="assets/FloresPanama/ramo3.png" alt="Arreglos Personalizados" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">¿Quieres un Arreglo Personalizado?</h2>
+                        <p class="product-description">¡Diseñamos contigo el ramo perfecto! Contamos con muchas más opciones disponibles y elaboramos arreglos a la medida según tus preferencias, colores favoritos y la ocasión que deseas celebrar. Cuéntanos tu idea y la haremos realidad.</p>
+                        <div class="product-price">A Consultar</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20gustar%C3%ADa%20cotizar%20un%20arreglo%20personalizado.%20%C2%BFPodr%C3%ADan%20ayudarme%3F', 'arreglos_personalizados')">
+                            Consultar Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 1 -->
+                <div class="product-card" data-category="cajas">
+                    <div class="category-badge">Caja de Madera</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo1.png')">
+                        <img src="assets/FloresPanama/ramo1.png" alt="Eres la Mejor Mamá del Mundo" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Eres la Mejor Mamá del Mundo</h2>
+                        <p class="product-description">Caja de madera artesanal que combina girasoles vibrantes, rosas rojas y claveles rosados sobre una base de gypsophila, con un cartel dedicado a mamá. Un detalle cargado de ternura para celebrarla con elegancia y cariño.</p>
+                        <div class="product-price">$75.00</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Eres%20la%20Mejor%20Mam%C3%A1%20del%20Mundo%20por%20%2475.00.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'eres_la_mejor_mama_del_mundo_1')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 2 -->
+                <div class="product-card" data-category="rosas">
+                    <div class="category-badge">Rosas</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo2.png')">
+                        <img src="assets/FloresPanama/ramo2.png" alt="Romance Clásico Bicolor" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Romance Clásico Bicolor</h2>
+                        <p class="product-description">Composición elevada de rosas rojas y blancas montadas en una base de cerámica rústica, realzada con gypsophila y follaje fresco. Una propuesta romántica y refinada para aniversarios o declaraciones inolvidables.</p>
+                        <div class="product-price">$68.75</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Romance%20Cl%C3%A1sico%20Bicolor%20por%20%2468.75.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'romance_clasico_bicolor_2')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 3 -->
+                <div class="product-card" data-category="premium">
+                    <div class="category-badge">Premium</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo3.png')">
+                        <img src="assets/FloresPanama/ramo3.png" alt="Bouquet Premium Pasión Eterna" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Bouquet Premium Pasión Eterna</h2>
+                        <p class="product-description">Imponente ramo de rosas rojas premium presentado en papel kraft y blanco con un lazo de satín, realzado con suaves ramas de gypsophila. Una pieza sofisticada para expresar amor profundo en momentos verdaderamente especiales.</p>
+                        <div class="product-price">$100.00</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Bouquet%20Premium%20Pasi%C3%B3n%20Eterna%20por%20%24100.00.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'bouquet_premium_pasion_eterna_3')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 4 -->
+                <div class="product-card" data-category="girasoles">
+                    <div class="category-badge">Girasoles</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo4.png')">
+                        <img src="assets/FloresPanama/ramo4.png" alt="Sol y Pasión" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Sol y Pasión</h2>
+                        <p class="product-description">Bouquet vibrante que combina girasoles radiantes con rosas rojas, acompañados de gypsophila y follaje fresco en envoltura roja, dorada y kraft. Transmite calidez y entusiasmo, ideal para celebrar logros o renovar el ánimo.</p>
+                        <div class="product-price">$68.75</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Sol%20y%20Pasi%C3%B3n%20por%20%2468.75.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'sol_y_pasion_4')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 5 -->
+                <div class="product-card" data-category="cajas">
+                    <div class="category-badge">En Caja</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo5.png')">
+                        <img src="assets/FloresPanama/ramo5.png" alt="Cumpleaños Feliz Dulce Sorpresa" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Cumpleaños Feliz Dulce Sorpresa</h2>
+                        <p class="product-description">Compacto arreglo en caja rosada con una rosa naranja, claveles, margaritas amarillas y follaje, coronado por un globo metálico de cumpleaños. Un detalle festivo y delicado perfecto para regalar alegría en una fecha especial.</p>
+                        <div class="product-price">$47.50</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Cumplea%C3%B1os%20Feliz%20Dulce%20Sorpresa%20por%20%2447.50.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'cumpleanos_feliz_dulce_sorpresa_5')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 6 -->
+                <div class="product-card" data-category="girasoles">
+                    <div class="category-badge">Girasoles</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo6.png')">
+                        <img src="assets/FloresPanama/ramo6.png" alt="Atardecer en Girasoles" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Atardecer en Girasoles</h2>
+                        <p class="product-description">Bouquet llamativo de girasoles y rosas rojas en papel rojo brillante, decorado con gypsophila y solidago amarillo y acompañado de tarjeta personalizable. Una mezcla llena de vida ideal para regalar en cualquier ocasión memorable.</p>
+                        <div class="product-price">$62.50</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Atardecer%20en%20Girasoles%20por%20%2462.50.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'atardecer_en_girasoles_6')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 7 -->
+                <div class="product-card" data-category="premium">
+                    <div class="category-badge">Premium</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo7.png')">
+                        <img src="assets/FloresPanama/ramo7.png" alt="Elegancia Rosa Pastel" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Elegancia Rosa Pastel</h2>
+                        <p class="product-description">Sofisticado arreglo de rosas rosadas y lirios stargazer con gypsophila y eucalipto sobre base plateada, rematado con un gran lazo rojo. Una composición elegante y romántica perfecta para aniversarios y celebraciones distinguidas.</p>
+                        <div class="product-price">$81.25</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Elegancia%20Rosa%20Pastel%20por%20%2481.25.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'elegancia_rosa_pastel_7')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 8 -->
+                <div class="product-card" data-category="girasoles">
+                    <div class="category-badge">Girasoles</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo8.png')">
+                        <img src="assets/FloresPanama/ramo8.png" alt="Campo de Sol" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Campo de Sol</h2>
+                        <p class="product-description">Bouquet rústico-elegante de girasoles y rosas rojas con eucalipto plateado y gypsophila en envoltura rosa fucsia y kraft. Un diseño fresco que evoca la belleza natural y transmite optimismo en cada mirada.</p>
+                        <div class="product-price">$62.50</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Campo%20de%20Sol%20por%20%2462.50.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'campo_de_sol_8')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 9 -->
+                <div class="product-card" data-category="cajas">
+                    <div class="category-badge">Caja Gourmet</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo9.png')">
+                        <img src="assets/FloresPanama/ramo9.png" alt="Caja Feliz Cumpleaños Gourmet" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Caja Feliz Cumpleaños Gourmet</h2>
+                        <p class="product-description">Caja de regalo con rosas rojas, claveles, chocolates Ferrero Rocher y snacks selectos, acompañada de un globo dorado de cumpleaños. Un obsequio integral que combina dulzura y flores para una celebración inolvidable.</p>
+                        <div class="product-price">$50.00</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Caja%20Feliz%20Cumplea%C3%B1os%20Gourmet%20por%20%2450.00.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'caja_feliz_cumpleanos_gourmet_9')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 10 -->
+                <div class="product-card" data-category="mixtas">
+                    <div class="category-badge">Flores Mixtas</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo10.png')">
+                        <img src="assets/FloresPanama/ramo10.png" alt="Fiesta Floral Festiva" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Fiesta Floral Festiva</h2>
+                        <p class="product-description">Centro floral con rosas rojas, alstroemerias rosadas y gypsophila, coronado con un globo de colores festivos. Un arreglo alegre y versátil ideal para cumpleaños, felicitaciones o cualquier celebración llena de buenos deseos.</p>
+                        <div class="product-price">$56.25</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Fiesta%20Floral%20Festiva%20por%20%2456.25.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'fiesta_floral_festiva_10')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 11 -->
+                <div class="product-card" data-category="cajas">
+                    <div class="category-badge">Caja Premium</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo11.png')">
+                        <img src="assets/FloresPanama/ramo11.png" alt="Caja Roja Ferrero Deluxe" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Caja Roja Ferrero Deluxe</h2>
+                        <p class="product-description">Elegante caja negra con claveles y rosas rojas intensas, decorada con bombones Ferrero Rocher dorados. Un regalo gourmet y romántico que combina lujo, sabor y emoción en un solo detalle inolvidable.</p>
+                        <div class="product-price">$60.00</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Caja%20Roja%20Ferrero%20Deluxe%20por%20%2460.00.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'caja_roja_ferrero_deluxe_11')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 12 -->
+                <div class="product-card" data-category="mixtas">
+                    <div class="category-badge">Flores Mixtas</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo12.png')">
+                        <img src="assets/FloresPanama/ramo12.png" alt="Alegría Multicolor de Cumpleaños" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Alegría Multicolor de Cumpleaños</h2>
+                        <p class="product-description">Arreglo colorido con margaritas amarillas, rosas lilas, claveles y un lirio naranja, acompañado de un globo de Feliz Cumpleaños. Una explosión de tonos llena de vida ideal para alegrar el día de alguien muy especial.</p>
+                        <div class="product-price">$43.75</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Alegr%C3%ADa%20Multicolor%20de%20Cumplea%C3%B1os%20por%20%2443.75.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'alegria_multicolor_de_cumpleanos_12')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 13 -->
+                <div class="product-card" data-category="cajas">
+                    <div class="category-badge">Para Él</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo13.png')">
+                        <img src="assets/FloresPanama/ramo13.png" alt="Brindis Tropical Para Él" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Brindis Tropical Para Él</h2>
+                        <p class="product-description">Composición masculina con girasoles, rosas azules preservadas, latas de bebida y bombones Ferrero, decorada con hojas tropicales en una caja negra. Un detalle moderno y original para sorprender a un caballero especial.</p>
+                        <div class="product-price">$37.50</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Brindis%20Tropical%20Para%20Él%20por%20%2437.50.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'brindis_tropical_para_el_13')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 14 -->
+                <div class="product-card" data-category="cajas">
+                    <div class="category-badge">Caja Corazón</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo14.png')">
+                        <img src="assets/FloresPanama/ramo14.png" alt="Corazón de Amor Eterno" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Corazón de Amor Eterno</h2>
+                        <p class="product-description">Imponente arreglo en forma de corazón con gypsophila rosada y bombones Ferrero, sobre una base de rosas rojas, claveles y margaritas en sombrerera rosa. Una declaración romántica perfecta para San Valentín o aniversarios.</p>
+                        <div class="product-price">$50.00</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Coraz%C3%B3n%20de%20Amor%20Eterno%20por%20%2450.00.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'corazon_de_amor_eterno_14')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 15 -->
+                <div class="product-card" data-category="bouquets">
+                    <div class="category-badge">Bouquet</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo15.png')">
+                        <img src="assets/FloresPanama/ramo15.png" alt="Sol Dorado Bouquet" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Sol Dorado Bouquet</h2>
+                        <p class="product-description">Elegante bouquet de rosas amarillas combinadas con statice morado, gypsophila y follaje verde envuelto en papel blanco con detalles dorados. Transmite alegría, amistad y calidez, ideal para regalar en momentos especiales.</p>
+                        <div class="product-price">$47.50</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Sol%20Dorado%20Bouquet%20por%20%2447.50.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'sol_dorado_bouquet_15')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 16 -->
+                <div class="product-card" data-category="girasoles">
+                    <div class="category-badge">Girasoles</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo16.png')">
+                        <img src="assets/FloresPanama/ramo16.png" alt="Girasoles Nocturnos" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Girasoles Nocturnos</h2>
+                        <p class="product-description">Bouquet moderno de girasoles con gypsophila y delicado follaje verde envuelto en papel negro mate y lazo blanco. Una propuesta sofisticada que combina la fuerza del girasol con la elegancia minimalista.</p>
+                        <div class="product-price">$43.75</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Girasoles%20Nocturnos%20por%20%2443.75.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'girasoles_nocturnos_16')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 17 -->
+                <div class="product-card" data-category="rosas">
+                    <div class="category-badge">Rosas</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo17.png')">
+                        <img src="assets/FloresPanama/ramo17.png" alt="Encanto Rosa y Carmesí" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Encanto Rosa y Carmesí</h2>
+                        <p class="product-description">Bouquet en florero de cristal con rosas rojas, rosas blush, mini claveles rosados y eucalipto envuelto en papeles rosa pastel. Una composición tierna y elegante ideal para enamorar o celebrar a alguien especial.</p>
+                        <div class="product-price">$56.25</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Encanto%20Rosa%20y%20Carmes%C3%AD%20por%20%2456.25.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'encanto_rosa_y_carmesi_17')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 18 -->
+                <div class="product-card" data-category="mixtas">
+                    <div class="category-badge">Cesta</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo18.png')">
+                        <img src="assets/FloresPanama/ramo18.png" alt="Cesta Tradicional de Amor" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Cesta Tradicional de Amor</h2>
+                        <p class="product-description">Cesta clásica tejida con rosas rojas, claveles y abundante gypsophila, decorada con un gran lazo dorado. Un arreglo tradicional y atemporal perfecto para expresar afecto, condolencias o admiración con elegancia.</p>
+                        <div class="product-price">$62.50</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Cesta%20Tradicional%20de%20Amor%20por%20%2462.50.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'cesta_tradicional_de_amor_18')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 19 -->
+                <div class="product-card" data-category="mixtas">
+                    <div class="category-badge">Flores Mixtas</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo19.png')">
+                        <img src="assets/FloresPanama/ramo19.png" alt="Te Amo Mamá Multicolor" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Te Amo Mamá Multicolor</h2>
+                        <p class="product-description">Alegre arreglo con rosas rojas, margaritas amarillas, claveles rosados y gypsophila en envoltura roja, acompañado de tarjeta dedicada a mamá. Un detalle colorido y emotivo para el Día de la Madre o cumpleaños.</p>
+                        <div class="product-price">$43.75</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Te%20Amo%20Mam%C3%A1%20Multicolor%20por%20%2443.75.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'te_amo_mama_multicolor_19')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 20 -->
+                <div class="product-card" data-category="bouquets">
+                    <div class="category-badge">Bouquet</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo20.png')">
+                        <img src="assets/FloresPanama/ramo20.png" alt="Fucsia Encantador" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Fucsia Encantador</h2>
+                        <p class="product-description">Composición con rosas fucsias, claveles rosados, statice morado y gypsophila en envoltura kraft con lazo dorado. Un arreglo vibrante y femenino que destaca por su frescura y romanticismo en cualquier ocasión.</p>
+                        <div class="product-price">$47.50</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Fucsia%20Encantador%20por%20%2447.50.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'fucsia_encantador_20')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 21 -->
+                <div class="product-card" data-category="rosas">
+                    <div class="category-badge">Rosas</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo21.png')">
+                        <img src="assets/FloresPanama/ramo21.png" alt="Atardecer Coral" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Atardecer Coral</h2>
+                        <p class="product-description">Arreglo vertical con rosas bicolor coral-naranja y claveles rojos, complementados con gypsophila y follaje verde, rematado con un lazo rosa fucsia. Una pieza cálida y delicada ideal para celebrar momentos felices.</p>
+                        <div class="product-price">$43.75</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Atardecer%20Coral%20por%20%2443.75.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'atardecer_coral_21')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRODUCTO 22 -->
+                <div class="product-card" data-category="mixtas">
+                    <div class="category-badge">Cesta</div>
+                    <div class="product-image" onclick="openImageModal('assets/FloresPanama/ramo22.png')">
+                        <img src="assets/FloresPanama/ramo22.png" alt="Cesta Jardín Encantado" loading="lazy">
+                    </div>
+                    <div class="product-content">
+                        <h2 class="product-title">Cesta Jardín Encantado</h2>
+                        <p class="product-description">Cesta blanca rebosante de rosas rojas y fucsias, margaritas rosadas, girasoles, claveles y statice morado con un toque de lirio. Un arreglo campestre y colorido perfecto para llenar de alegría cualquier espacio o celebración.</p>
+                        <div class="product-price">$37.50</div>
+                        <button class="product-button"
+                            onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20interesa%20Cesta%20Jard%C3%ADn%20Encantado%20por%20%2437.50.%20%C2%BFPodr%C3%ADan%20darme%20m%C3%A1s%20informaci%C3%B3n%3F', 'cesta_jardin_encantado_22')">
+                            Pedir Ahora
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal para ampliar imágenes -->
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+        <div id="caption"></div>
+    </div>
+
+    <script>
+        var modal = document.getElementById("imageModal");
+        var span = document.getElementsByClassName("close")[0];
+
+        function openImageModal(imageSrc) {
+            modal.style.display = "block";
+            document.getElementById("img01").src = imageSrc;
+        }
+
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Filter functionality
+        function filterProducts(category) {
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                if (category === 'all') {
+                    card.style.display = '';
+                } else {
+                    const cardCategory = card.getAttribute('data-category');
+                    if (cardCategory === category) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Add click handlers to filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                filterProducts(this.getAttribute('data-category'));
+            });
+        });
+    </script>
+</body>
+
+</html>
