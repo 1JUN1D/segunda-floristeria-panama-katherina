@@ -21,7 +21,7 @@
         "telephone": "+507 6112-9013",
         "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Ciudad de Panamá",
+            "streetAddress": "San Francisco, Carrasquilla, Ciudad de Panamá",
             "addressLocality": "Ciudad de Panamá",
             "addressRegion": "Panamá",
             "addressCountry": "PA"
@@ -417,7 +417,7 @@
             <p class="section-title">Dónde Estamos</p>
             <div class="map-container">
                 <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.03024485359!2d-79.4136114!3d9.0610056!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fab55336ad10cc1%3A0x8ff1cdcade7d21ec!2sFloristeria%20Panama%20-%20Sophia%20Bouquet!5e0!3m2!1ses-419!2sco!4v1773761482922!5m2!1ses-419!2sco"
+                    src="https://maps.google.com/maps?width=100%25&height=400&hl=es&q=San+Francisco,+Carrasquilla,+Ciudad+de+Panam%C3%A1&t=&z=15&ie=UTF8&iwloc=B&output=embed"
                     width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
@@ -488,6 +488,21 @@
             });
         });
     </script>
+
+    <!-- Nota flotante: Delivery No Incluido -->
+    <style>
+        .delivery-floating-note { position: fixed; bottom: 20px; left: 20px; background: linear-gradient(135deg,#ff6b9d,#c44569); color:#fff; padding:12px 18px; border-radius:30px; font-family:'Segoe UI',Tahoma,sans-serif; font-size:14px; font-weight:600; box-shadow:0 6px 18px rgba(196,69,105,0.35); z-index:9998; display:flex; align-items:center; gap:8px; max-width:280px; line-height:1.3; animation: pulseDelivery 2.5s ease-in-out infinite; }
+        .delivery-floating-note .delivery-icon { font-size:18px; }
+        .delivery-floating-note .delivery-close { background:rgba(255,255,255,0.2); border:none; color:#fff; cursor:pointer; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:14px; margin-left:6px; }
+        @keyframes pulseDelivery { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-4px);} }
+        @media (max-width: 600px) { .delivery-floating-note{font-size:12px; padding:10px 14px; max-width:220px; bottom:12px; left:12px;} }
+    </style>
+    <div class="delivery-floating-note" id="deliveryNote">
+        <span class="delivery-icon">🚚</span>
+        <span>El servicio de Delivery <strong>NO está incluido</strong> en el precio.</span>
+        <button class="delivery-close" onclick="document.getElementById('deliveryNote').style.display='none'" aria-label="Cerrar">×</button>
+    </div>
+
 </body>
 
 </html>

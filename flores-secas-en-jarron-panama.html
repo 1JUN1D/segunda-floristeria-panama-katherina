@@ -21,7 +21,7 @@
             "telephone": "+50760318371",
             "address": {
                 "@type": "PostalAddress",
-                "streetAddress": "Ciudad de Panamá",
+                "streetAddress": "San Francisco, Carrasquilla, Ciudad de Panamá",
                 "addressLocality": "Ciudad de Panamá",
                 "addressRegion": "Panamá",
                 "addressCountry": "PA"
@@ -183,7 +183,7 @@
                     <div class="price-item">
                         <h4>Jarrón Personalizado</h4>
                         <div class="price">Desde $150,000</div>
-                        <p>Creación exclusiva adaptada a tu espacio y estilo decorativo específico</p>
+                        <p>Pieza única ajustada a tu ambiente y a tu estilo decorativo particular</p>
                     </div>
                 </div>
             </div>
@@ -216,7 +216,7 @@
             <!-- Call to Action -->
             <div class="cta-section">
                 <h2>¿Listo para Embellecer tu Espacio con Flores Eternas?</h2>
-                <p>Escríbenos ahora para encontrar el jarrón con flores secas ideal para tu hogar u oficina.</p>
+                <p>Contáctanos hoy mismo y descubre el jarrón con flores secas perfecto para tu casa u oficina.</p>
                 <button class="cta-button-large"
                     onclick="window.open('https://wa.me/50760318371?text=Hola, me interesan los arreglos de flores secas en jarrón. ¿Me pueden asesorar?', '_blank')">
                     Escribir a WhatsApp
@@ -252,6 +252,21 @@
     </div>
 
     <script src="categoria.js"></script>
+
+    <!-- Nota flotante: Delivery No Incluido -->
+    <style>
+        .delivery-floating-note { position: fixed; bottom: 20px; left: 20px; background: linear-gradient(135deg,#ff6b9d,#c44569); color:#fff; padding:12px 18px; border-radius:30px; font-family:'Segoe UI',Tahoma,sans-serif; font-size:14px; font-weight:600; box-shadow:0 6px 18px rgba(196,69,105,0.35); z-index:9998; display:flex; align-items:center; gap:8px; max-width:280px; line-height:1.3; animation: pulseDelivery 2.5s ease-in-out infinite; }
+        .delivery-floating-note .delivery-icon { font-size:18px; }
+        .delivery-floating-note .delivery-close { background:rgba(255,255,255,0.2); border:none; color:#fff; cursor:pointer; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:14px; margin-left:6px; }
+        @keyframes pulseDelivery { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-4px);} }
+        @media (max-width: 600px) { .delivery-floating-note{font-size:12px; padding:10px 14px; max-width:220px; bottom:12px; left:12px;} }
+    </style>
+    <div class="delivery-floating-note" id="deliveryNote">
+        <span class="delivery-icon">🚚</span>
+        <span>El servicio de Delivery <strong>NO está incluido</strong> en el precio.</span>
+        <button class="delivery-close" onclick="document.getElementById('deliveryNote').style.display='none'" aria-label="Cerrar">×</button>
+    </div>
+
 </body>
 
 </html>
