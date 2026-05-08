@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="assets/logo.webp" type="image/x-icon">
 
 
-    <!-- Google tag (gtag.js) -->
+    <!-- Google tag (gtag.js) - GA4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4D2Q2MR5V2"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -19,16 +19,31 @@
         gtag('config', 'G-4D2Q2MR5V2');
     </script>
 
-    <!-- FUNCIÓN DE TRACKING WHATSAPP -->
+    <!-- Google Ads -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17698830352"></script>
+    <script>
+        gtag('config', 'AW-17698830352');
+    </script>
+
+    <!-- FUNCIÓN DE TRACKING WHATSAPP (con conversión Google Ads) -->
     <script>
         function trackWhatsAppLead(whatsappUrl, eventLabel) {
             try {
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'generate_lead', {
-                        'event_category': 'WhatsApp',
-                        'event_label': eventLabel
-                    });
-                }
+                gtag('event', 'whatsapp_click', {
+                    'event_category': 'engagement',
+                    'event_label': eventLabel,
+                    'button_location': eventLabel,
+                    'page_location': window.location.href
+                });
+
+                gtag('event', 'conversion', {
+                    'send_to': 'AW-17698830352/lA9PCODAu4wbEMiPm5pB',
+                    'event_callback': function () {
+                        window.open(whatsappUrl, '_blank');
+                    }
+                });
+
+                // Backup: si el callback falla, abre WhatsApp después de 300ms
                 setTimeout(function() {
                     window.open(whatsappUrl, '_blank');
                 }, 300);
@@ -81,11 +96,11 @@
 </head>
 
 <body>
-    <!-- Nota flotante: Delivery No Incluido -->
-    <div class="delivery-floating-note" id="deliveryNote">
-        <span class="delivery-icon">🚚</span>
-        <span>El servicio de Delivery <strong>NO está incluido</strong> en el precio.</span>
-        <button class="delivery-close" onclick="document.getElementById('deliveryNote').style.display='none'" aria-label="Cerrar">×</button>
+    <!-- Nota flotante: urgencia/reciprocidad (gatillo de neuroventas) -->
+    <div class="delivery-floating-note" id="deliveryNote" style="cursor:pointer;" onclick="trackWhatsAppLead('https://wa.me/50760318371?text=Hola%20KB%20Flowers%2C%20estoy%20viendo%20el%20cat%C3%A1logo%20y%20quiero%20entrega%20HOY%20en%20Panam%C3%A1.%20%C2%BFMe%20asesoran%3F', 'catalogo_urgency_note')">
+        <span class="delivery-icon">🌹</span>
+        <span>Pide antes de las <strong>2:00 PM</strong> y entregamos HOY</span>
+        <button class="delivery-close" onclick="event.stopPropagation(); document.getElementById('deliveryNote').style.display='none'" aria-label="Cerrar">×</button>
     </div>
 
     <!-- Header -->

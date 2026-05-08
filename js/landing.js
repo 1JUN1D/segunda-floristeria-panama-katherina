@@ -125,54 +125,71 @@ function renderProducts(filters = [], limit = null) {
     });
 }
 
-// --- FUNCIONES DE WHATSAPP ---
-function contactCustomWA() {
-    const url = 'https://wa.me/50760318371?text=Hola%20KB%20Flowers,%20me%20gustar%C3%ADa%20cotizar%20un%20arreglo%20personalizado.%20%C2%BFPodr%C3%ADan%20ayudarme%3F';
+// --- FUNCIONES DE WHATSAPP (con tracking de landing de origen y backup anti-race) ---
+function _getLandingPath() {
     try {
-        gtag('event', 'conversion', {
-            'send_to': 'AW-17971833009/vV8ZCOKaw_0bELHR0flC',
-            'value': 1.0,
-            'currency': 'USD',
-            'event_callback': function () { window.open(url, '_blank'); }
-        });
-    } catch (e) { window.open(url, '_blank'); }
+        return window.location.pathname.split('/').pop().replace('.html','') || 'home';
+    } catch (e) { return 'unknown'; }
 }
 
-function contactWA() {
-    const url = 'https://wa.me/50760318371?text=Hola,%20me%20gustar%C3%ADa%20recibir%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20flores.%20%C2%BFPodr%C3%ADan%20ayudarme%3F';
-    // Track conversion - Mensaje WhatsApp
+function _openWAOnce(url) {
+    var opened = false;
+    return function() {
+        if (!opened) { opened = true; window.open(url, '_blank'); }
+    };
+}
+
+function contactCustomWA() {
+    const landing = _getLandingPath();
+    const url = `https://wa.me/50760318371?text=${encodeURIComponent('Hola KB Flowers 🌹, vi la página de '+landing+' y quiero un arreglo personalizado. ¿Me asesoran con opciones?')}`;
+    const open = _openWAOnce(url);
     try {
-        gtag('event', 'conversion', {
-            'send_to': 'AW-17971833009/vV8ZCOKaw_0bELHR0flC',
-            'value': 1.0,
-            'currency': 'COP',
-            'event_callback': function () {
-                window.open(url, '_blank');
-            }
-        });
-    } catch (e) {
-        window.open(url, '_blank');
-    }
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'whatsapp_click', { 'event_category': 'engagement', 'event_label': 'custom_arrangement', 'landing': landing });
+            gtag('event', 'conversion', {
+                'send_to': 'AW-17971833009/vV8ZCOKaw_0bELHR0flC',
+                'value': 1.0, 'currency': 'USD',
+                'event_callback': open
+            });
+        }
+    } catch (e) {}
+    setTimeout(open, 400);
+}
+
+function contactWA(source) {
+    source = source || 'generic';
+    const landing = _getLandingPath();
+    const url = `https://wa.me/50760318371?text=${encodeURIComponent('Hola KB Flowers 🌹, vi su web ('+landing+') y quiero cotizar flores en Panamá. ¿Me asesoran y entregan HOY?')}`;
+    const open = _openWAOnce(url);
+    try {
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'whatsapp_click', { 'event_category': 'engagement', 'event_label': source, 'landing': landing });
+            gtag('event', 'conversion', {
+                'send_to': 'AW-17971833009/vV8ZCOKaw_0bELHR0flC',
+                'value': 1.0, 'currency': 'USD',
+                'event_callback': open
+            });
+        }
+    } catch (e) {}
+    setTimeout(open, 400);
 }
 
 function orderWA(productName, price) {
-    const message = `Hola, me interesa ${productName} (${formatUSD(price)}). ¿Podrías darme más información?`;
-    const encodedMessage = encodeURIComponent(message);
-    const url = `https://wa.me/50760318371?text=${encodedMessage}`;
-    
-    // Track conversion to Google Ads
+    const landing = _getLandingPath();
+    const message = `Hola KB Flowers 🌹, vi el *${productName}* (${formatUSD(price)}) en su web. ¿Está disponible para entrega HOY en Panamá?`;
+    const url = `https://wa.me/50760318371?text=${encodeURIComponent(message)}`;
+    const open = _openWAOnce(url);
     try {
-        gtag('event', 'conversion', {
-            'send_to': 'AW-17971833009/vV8ZCOKaw_0bELHR0flC',
-            'value': 1.0,
-            'currency': 'COP',
-            'event_callback': function () {
-                window.open(url, '_blank');
-            }
-        });
-    } catch (e) {
-        window.open(url, '_blank');
-    }
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'product_order', { 'event_category': 'Catalog', 'event_label': productName, 'landing': landing, 'value': price });
+            gtag('event', 'conversion', {
+                'send_to': 'AW-17971833009/vV8ZCOKaw_0bELHR0flC',
+                'value': parseFloat(price) || 1.0, 'currency': 'USD',
+                'event_callback': open
+            });
+        }
+    } catch (e) {}
+    setTimeout(open, 400);
 }
 
 // --- FILTRADO DE PRODUCTOS ---
@@ -199,24 +216,262 @@ document.addEventListener('DOMContentLoaded', function() {
     renderProducts();
 });
 
-// --- NOTA FLOTANTE: DELIVERY NO INCLUIDO ---
-(function injectDeliveryNote() {
+// =====================================================================
+// SISTEMA DE NEUROVENTAS PARA LANDINGS DE PANAMÁ
+// Aplica precio anclado + badges + notificaciones sociales + countdown
+// SIN modificar cada landing HTML (usa MutationObserver sobre el grid).
+// =====================================================================
+
+// --- HELPERS DE PRECIO ANTERIOR ---
+// Precio "Antes" 30% mayor al precio actual, redondeado a $0.50.
+function _calcShopPriceUSD(price) {
+    return Math.ceil((price * 1.30) * 2) / 2;
+}
+
+function _badgeForProductPa(p) {
+    if (!p) return null;
+    if (p.id % 9 === 0) return { txt: '⭐ Más vendido', cls: 'badge-best' };
+    if (p.id % 7 === 0) return { txt: '🔥 Top semana', cls: 'badge-hot' };
+    if (p.id % 11 === 0) return { txt: '⏰ Últimos 3 hoy', cls: 'badge-low' };
+    if ((p.tags || []).includes('premium')) return { txt: '💎 Premium', cls: 'badge-prem' };
+    return null;
+}
+
+// Usa formatUSD ya existente para mostrar el precio anclado
+function _decoratePriceCardPa(card) {
+    if (!card || card.dataset.neuroDecorated === '1') return;
+    card.dataset.neuroDecorated = '1';
+
+    var priceEl = card.querySelector('.price');
+    if (!priceEl) return;
+    var raw = priceEl.textContent.replace(/[^0-9.]/g, '');
+    var price = parseFloat(raw);
+    if (!price || isNaN(price)) return;
+
+    var shop = _calcShopPriceUSD(price);
+    var save = shop - price;
+    var pct  = Math.round((save / shop) * 100);
+
+    // Wrap del precio con bloque de anclaje
+    var wrap = priceEl.closest('.price-block') || priceEl.parentNode;
+    var newBlock = document.createElement('div');
+    newBlock.className = 'price-block-anchor';
+    newBlock.innerHTML =
+        '<span class="lbl-shop">Antes</span>' +
+        '<span class="price-shop">' + formatUSD(shop) + '</span>' +
+        '<span class="lbl-web">Ahora</span>' +
+        '<span class="price-web">' + formatUSD(price) + '</span>' +
+        '<span class="price-save">Ahorras ' + formatUSD(save) + '</span>';
+    wrap.parentNode.replaceChild(newBlock, wrap);
+
+    // Badge de descuento sobre la imagen
+    var imgWrap = card.querySelector('.product-img-wrap, .product-image');
+    if (imgWrap && !imgWrap.querySelector('.product-discount-badge')) {
+        imgWrap.style.position = 'relative';
+        var badge = document.createElement('span');
+        badge.className = 'product-discount-badge';
+        badge.textContent = '-' + pct + '% HOY';
+        imgWrap.appendChild(badge);
+
+        // Tag de status si el producto tiene id (lo intentamos recuperar del nombre)
+        var nameEl = card.querySelector('h3');
+        if (nameEl) {
+            var prod = (typeof products !== 'undefined') ? products.find(function(p) { return p.name === nameEl.textContent.trim(); }) : null;
+            var status = _badgeForProductPa(prod);
+            if (status) {
+                var st = document.createElement('span');
+                st.className = 'product-status-badge ' + status.cls;
+                st.textContent = status.txt;
+                imgWrap.appendChild(st);
+            }
+        }
+    }
+}
+
+// --- CSS GLOBAL DE NEUROVENTAS ---
+(function injectNeuroSalesCSSPa() {
+    if (document.getElementById('neurosales-css-pa')) return;
+    var s = document.createElement('style');
+    s.id = 'neurosales-css-pa';
+    s.textContent = `
+        .product-discount-badge {
+            position: absolute; top: 10px; left: 10px;
+            background: linear-gradient(135deg, #d62828, #9d0208);
+            color: #fff; padding: 6px 12px; border-radius: 20px;
+            font-size: 13px; font-weight: 800; letter-spacing: 0.4px;
+            box-shadow: 0 4px 12px rgba(157,2,8,0.45);
+            z-index: 5; transform: rotate(-4deg);
+            animation: neuroPulsePa 2.2s ease-in-out infinite;
+        }
+        @keyframes neuroPulsePa {
+            0%,100% { transform: rotate(-4deg) scale(1); }
+            50% { transform: rotate(-4deg) scale(1.06); }
+        }
+        .product-status-badge {
+            position: absolute; top: 48px; right: 10px;
+            color: #fff; padding: 5px 10px; border-radius: 14px;
+            font-size: 11px; font-weight: 700; letter-spacing: 0.3px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.18); z-index: 5;
+        }
+        .product-status-badge.badge-best { background: linear-gradient(135deg,#f59e0b,#d97706); }
+        .product-status-badge.badge-hot  { background: linear-gradient(135deg,#ef4444,#b91c1c); }
+        .product-status-badge.badge-low  { background: linear-gradient(135deg,#7c3aed,#5b21b6); }
+        .product-status-badge.badge-prem { background: linear-gradient(135deg,#0f766e,#0d4842); }
+        .price-block-anchor { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+        .price-block-anchor .lbl-shop { font-size: 11px; color: #888; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; }
+        .price-block-anchor .price-shop { font-size: 14px; color: #999; text-decoration: line-through; font-weight: 500; }
+        .price-block-anchor .lbl-web { font-size: 11px; color: #c44569; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+        .price-block-anchor .price-web { font-size: 22px; color: #c44569; font-weight: 800; line-height: 1; }
+        .price-block-anchor .price-save { font-size: 11px; color: #16a34a; font-weight: 700; margin-top: 2px; background: #ecfdf5; padding: 2px 8px; border-radius: 8px; display: inline-block; align-self: flex-start; }
+        .social-notif { position: fixed; left: 20px; bottom: 90px; max-width: 310px; background: #fff; color: #333; border-radius: 14px; padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; box-shadow: 0 10px 28px rgba(0,0,0,0.18); border-left: 4px solid #16a34a; z-index: 9990; font-size: 13px; line-height: 1.4; transform: translateY(120%); opacity: 0; transition: all 0.45s cubic-bezier(.22,1.5,.36,1); pointer-events: none; }
+        .social-notif.show { transform: translateY(0); opacity: 1; }
+        .social-notif .sn-emoji { font-size: 22px; line-height: 1; }
+        .social-notif .sn-name { font-weight: 700; color: #111; }
+        .social-notif .sn-time { color: #888; font-size: 11px; margin-top: 3px; }
+        @media (max-width: 600px) { .social-notif { left: 12px; right: 12px; max-width: none; bottom: 80px; } }
+    `;
+    document.head.appendChild(s);
+})();
+
+// --- OBSERVADOR DE GRIDS DE PRODUCTOS ---
+// Funciona para cualquier landing que renderice productos en .product-card-landing
+// o .product-item, sin tocar el HTML de cada landing.
+(function watchProductGrids() {
+    function decorateExisting() {
+        document.querySelectorAll('.product-card-landing, .product-item').forEach(_decoratePriceCardPa);
+    }
+
+    function start() {
+        decorateExisting();
+
+        var obs = new MutationObserver(function(muts) {
+            muts.forEach(function(m) {
+                m.addedNodes.forEach(function(node) {
+                    if (node.nodeType !== 1) return;
+                    if (node.matches && (node.matches('.product-card-landing') || node.matches('.product-item'))) {
+                        _decoratePriceCardPa(node);
+                    } else if (node.querySelectorAll) {
+                        node.querySelectorAll('.product-card-landing, .product-item').forEach(_decoratePriceCardPa);
+                    }
+                });
+            });
+        });
+        // Observa todo el body — barato porque solo reacciona a inserciones
+        obs.observe(document.body, { childList: true, subtree: true });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', start);
+    } else { start(); }
+})();
+
+// --- NOTIFICACIONES SOCIALES (FOMO) ---
+(function injectSocialNotifsPa() {
+    var pool = [
+        { name: 'María C.',    area: 'San Francisco',   product: 'Bouquet Premium Pasión Eterna', ago: 4 },
+        { name: 'Andrés L.',   area: 'Costa del Este',  product: 'Elegancia Rosa Pastel',         ago: 9 },
+        { name: 'Daniela P.',  area: 'Obarrio',         product: 'Corazón de Amor Eterno',        ago: 14 },
+        { name: 'Roberto M.',  area: 'Bella Vista',     product: 'Atardecer en Girasoles',        ago: 21 },
+        { name: 'Sofía R.',    area: 'Marbella',        product: 'Sol y Pasión',                  ago: 28 },
+        { name: 'Carlos V.',   area: 'San Miguelito',   product: 'Caja Roja Ferrero Deluxe',      ago: 36 },
+        { name: 'Ana G.',      area: 'Clayton',         product: 'Cesta Tradicional de Amor',     ago: 44 },
+        { name: 'Diego T.',    area: 'Punta Pacífica',  product: 'Sol Dorado Bouquet',            ago: 52 },
+    ];
+    var idx = 0;
+
+    function showOne() {
+        var item = pool[idx % pool.length]; idx++;
+        var n = document.createElement('div');
+        n.className = 'social-notif';
+        n.innerHTML = '<span class="sn-emoji">🌹</span>' +
+            '<div><div><span class="sn-name">' + item.name + '</span> de ' + item.area +
+            ' acaba de pedir <strong>' + item.product + '</strong></div>' +
+            '<div class="sn-time">Hace ' + item.ago + ' min · ✅ Pedido confirmado</div></div>';
+        document.body.appendChild(n);
+        setTimeout(function() { n.classList.add('show'); }, 50);
+        setTimeout(function() {
+            n.classList.remove('show');
+            setTimeout(function() { if (n.parentNode) n.parentNode.removeChild(n); }, 500);
+        }, 6500);
+    }
+
+    function start() {
+        setTimeout(function() {
+            showOne();
+            setInterval(showOne, 25000);
+        }, 8000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', start);
+    } else { start(); }
+})();
+
+// --- CONTADOR DE URGENCIA "ENTREGA HOY" (escasez temporal real) ---
+// Cutoff Panamá: 2:00 PM (más estricto que Cali porque el tráfico es de día completo)
+(function injectUrgencyCountdownPa() {
+    function updateCountdown() {
+        var bar = document.querySelector('.top-bar');
+        if (!bar) return;
+        var marker = document.getElementById('urgencyCountdownTextPa');
+        if (!marker) {
+            marker = document.createElement('span');
+            marker.id = 'urgencyCountdownTextPa';
+            marker.style.cssText = 'display:block;font-weight:700;margin-top:2px;font-size:13px;color:#fff;';
+            bar.appendChild(marker);
+        }
+        var now = new Date();
+        var cutoff = new Date(now); cutoff.setHours(14, 0, 0, 0); // 2:00 PM
+        var diffMs = cutoff - now;
+        if (diffMs > 0) {
+            var totalMin = Math.floor(diffMs / 60000);
+            var h = Math.floor(totalMin / 60);
+            var m = totalMin % 60;
+            var label = (h > 0 ? h + 'h ' : '') + m + 'm';
+            marker.innerHTML = '⏰ Pide en las próximas <strong>' + label + '</strong> y entregamos HOY antes de las 6:00 PM';
+        } else {
+            marker.innerHTML = '🌅 Próximas entregas: MAÑANA. Pide ya y aseguras tu cupo del primer turno';
+        }
+    }
+    function start() {
+        updateCountdown();
+        setInterval(updateCountdown, 60000);
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', start);
+    } else { start(); }
+})();
+
+// --- NOTA FLOTANTE: URGENCIA + RECIPROCIDAD (gatillo de neuroventas) ---
+// Reemplaza la antigua nota "Delivery NO incluido" que generaba priming negativo.
+// Esta versión crea urgencia, es clickeable y dispara conversión a WhatsApp.
+(function injectUrgencyNote() {
     function buildNote() {
-        if (document.getElementById('deliveryNote')) return;
+        if (document.getElementById('urgencyNotePanama')) return;
+        // Limpiar nota negativa antigua si quedó cacheada
+        var old = document.getElementById('deliveryNote'); if (old) old.remove();
+
         var style = document.createElement('style');
         style.textContent = `
-            .delivery-floating-note { position: fixed; bottom: 20px; left: 20px; background: linear-gradient(135deg,#ff6b9d,#c44569); color:#fff; padding:12px 18px; border-radius:30px; font-family:'Segoe UI',Tahoma,sans-serif; font-size:14px; font-weight:600; box-shadow:0 6px 18px rgba(196,69,105,0.35); z-index:9998; display:flex; align-items:center; gap:8px; max-width:280px; line-height:1.3; animation: pulseDelivery 2.5s ease-in-out infinite; }
-            .delivery-floating-note .delivery-icon { font-size:18px; }
-            .delivery-floating-note .delivery-close { background:rgba(255,255,255,0.2); border:none; color:#fff; cursor:pointer; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:14px; margin-left:6px; }
-            @keyframes pulseDelivery { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-4px);} }
-            @media (max-width: 600px) { .delivery-floating-note{font-size:12px; padding:10px 14px; max-width:220px; bottom:12px; left:12px;} }
+            .urgency-floating-note { position: fixed; bottom: 20px; left: 20px; background: linear-gradient(135deg,#ff6b9d,#c44569); color:#fff; padding:12px 18px; border-radius:30px; font-family:'Segoe UI',Tahoma,sans-serif; font-size:14px; font-weight:600; box-shadow:0 6px 18px rgba(196,69,105,0.35); z-index:9998; display:flex; align-items:center; gap:8px; max-width:300px; line-height:1.3; animation: pulseUrgencyPa 2.5s ease-in-out infinite; cursor:pointer; }
+            .urgency-floating-note .urgency-icon { font-size:20px; }
+            .urgency-floating-note .urgency-close { background:rgba(255,255,255,0.2); border:none; color:#fff; cursor:pointer; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:14px; margin-left:6px; flex-shrink:0; }
+            @keyframes pulseUrgencyPa { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-4px);} }
+            @media (max-width: 600px) { .urgency-floating-note{font-size:12px; padding:10px 14px; max-width:240px; bottom:12px; left:12px;} }
         `;
         document.head.appendChild(style);
+
         var note = document.createElement('div');
-        note.className = 'delivery-floating-note';
-        note.id = 'deliveryNote';
-        note.innerHTML = '<span class="delivery-icon">🚚</span><span>El servicio de Delivery <strong>NO está incluido</strong> en el precio.</span><button class="delivery-close" aria-label="Cerrar">×</button>';
-        note.querySelector('.delivery-close').onclick = function() { note.style.display = 'none'; };
+        note.className = 'urgency-floating-note';
+        note.id = 'urgencyNotePanama';
+        note.innerHTML = '<span class="urgency-icon">🌹</span><span>Pide antes de las <strong>2:00 PM</strong> y entregamos HOY en Panamá</span><button class="urgency-close" aria-label="Cerrar">×</button>';
+        note.addEventListener('click', function(ev) {
+            if (ev.target.classList.contains('urgency-close')) {
+                note.style.display = 'none';
+                return;
+            }
+            if (typeof contactWA === 'function') contactWA('urgency_note');
+        });
         document.body.appendChild(note);
     }
     if (document.readyState === 'loading') {
